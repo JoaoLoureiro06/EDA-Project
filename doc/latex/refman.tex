@@ -1,172 +1,316 @@
-\documentclass[12pt]{article}
+\documentclass[a4paper, 12pt]{article}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath, amssymb, amsfonts}
-\usepackage{graphicx}
-\usepackage{fancyhdr}
-\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage[portuguese]{babel}
+\usepackage{geometry}
 \usepackage{listings}
 \usepackage{xcolor}
-\usepackage{geometry}
 \usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref} 
 
-% Configuração da página
-\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+\geometry{a4paper, left=25mm, right=25mm, top=30mm, bottom=25mm}
 
-% Configuração do código fonte
-\lstset{
-    language=C,
+% Estilo para o código
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
     basicstyle=\ttfamily\footnotesize,
-    numbers=left,
-    numberstyle=\tiny,
-    stepnumber=1,
-    numbersep=5pt,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
     showstringspaces=false,
-    captionpos=b,
-    breaklines=true,
-    frame=single,
-    keywordstyle=\color{blue},
-    stringstyle=\color{red},
-    commentstyle=\color{green}\itshape,
+    showtabs=false,                  
+    tabsize=2
 }
 
-% Configuração do cabeçalho e rodapé
+\lstset{style=mystyle}
+
+% Formatação de seções
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+
+% Cabeçalho e rodapé
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{Gerenciamento de Antenas}
-\fancyhead[C]{Trabalho de Estruturas de Dados}
-\fancyhead[R]{2025}
-\fancyfoot[C]{\thepage}
+\rhead{Sistema de Gerenciamento de Antenas}
+\lhead{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
 
-\title{\textbf{Gerenciamento de Antenas: Estruturas de Dados e Algoritmos}}
-\author{Jo\~ao Loureiro}
-\date{Mar\c{c}o de 2025}
+% Capa
+\title{
+    \vspace{2cm}
+    \textbf{Relatório Técnico} \\
+    \large Estrutura de Dados Avançada \\
+    \large Sistema de Gerenciamento de Antenas \\
+    \vspace{1cm}
+    \includegraphics[width=0.7\textwidth]{imagem.jpg} % Substitua por seu logo
+    \vspace{3cm}
+}
+\author{
+    Engenharia de Sistemas Informáticos\\
+    Instituto Politécnico do Cavado e Ave  \\
+    João Loureiro Nº31551 \\
+    \vspace{1cm}
+}
+\date{\today}
 
 \begin{document}
 
+% Capa
 \maketitle
+\thispagestyle{empty}
+\clearpage
 
-\begin{abstract}
-Este trabalho apresenta um sistema para gerenciamento de antenas em uma cidade, utilizando listas ligadas simples. O sistema permite carregar, inserir, remover e listar antenas, além de detectar interferências e exibir um mapa representativo. Foram aplicadas técnicas de manipulação de listas dinâmicas para otimizar a eficiência das operações.
-Link do repositorio Git: \href{https://github.com/JoaoLoureiro06/EDA-Project.git}{https://github.com/JoaoLoureiro06/EDA-Project.git}
-\end{abstract}
-
+% Sumário
 \tableofcontents
-\newpage
+\thispagestyle{empty}
+\clearpage
+
+\setcounter{page}{1}
 
 \section{Introdução}
-O gerenciamento de antenas é um desafio na organização de redes de comunicação. Este projeto propõe um sistema baseado em estruturas de dados dinâmicas para armazenar e manipular informações sobre antenas, otimizando a detecção de interferências e o controle de posicionamento.
+O Sistema de Gerenciamento de Antenas é uma aplicação desenvolvida em linguagem C para controle e monitoramento de antenas em um ambiente geográfico delimitado. O software permite:
 
-\section{Metodologia}
-Utilizamos uma lista ligada simples para armazenar os dados das antenas. As operações implementadas incluem:
 \begin{itemize}
-    \item Inserção de novas antenas.
-    \item Remoção de antenas existentes.
-    \item Listagem de todas as antenas.
-    \item Detecção de interferências com base na proximidade.
-    \item Exibição de um mapa representando as antenas e áreas problemáticas.
+\item Inserção e remoção de antenas
+\item Visualização em formato de mapa em formato matriz.
+\item Detecção automática de pontos de interferência (efeito nefasto)
+\item Carregamento e armazenamento de configurações
 \end{itemize}
 
-\section{Estrutura de Dados Utilizada}
-A estrutura básica da antena foi definida conforme abaixo:
+\section{Objetivos}
+O sistema foi desenvolvido com os seguintes objetivos:
 
-\begin{lstlisting}[caption=Estrutura da Antena]
+\begin{itemize}
+\item Fornecer uma ferramenta eficiente para gestão de antenas
+\item Identificar automaticamente áreas de interferência
+\item Facilitar o planejamento de instalações
+\item Oferecer visualização clara da disposição espacial
+\end{itemize}
+
+\section{Estrutura de Dados}
+O sistema utiliza uma lista encadeada para armazenar as antenas:
+
+\begin{lstlisting}[language=C]
 typedef struct Antena {
-    char freq;
-    int x, y;
-    struct Antena* next;
+    char freq;          // Frequencia (A-Z)
+    int x, y;           // Coordenadas (0 a TAM_MAPA-1)
+    struct Antena* next; // Ponteiro para proxima
 } Antena;
 \end{lstlisting}
 
-Cada antena possui uma frequência representada por um caractere, além das coordenadas (x, y). A lista ligada armazena os elementos de maneira dinâmica.
+\section{Funcionalidades Principais}
 
-\section{Implementação do Sistema}
+\subsection{Menu Principal}
+Interface de controle do sistema:
 
-\subsection{Criação e Inserção de Antenas}
+\begin{lstlisting}[language=C]
+int main() {
+    Antena* lista = NULL;
+    int opcao;
+    char nomeArquivo[50];
 
-\begin{lstlisting}[caption=Função para criar uma antena]
-Antena* criarAntena(char freq, int x, int y) {
-    Antena* nova = (Antena*)malloc(sizeof(Antena));
-    nova->freq = freq;
-    nova->x = x;
-    nova->y = y;
-    nova->next = NULL;
-    return nova;
+    do {
+        // Menu interativo
+        printf("\n===== Menu =====\n");
+        printf("1. Carregar Antenas de Arquivo\n");
+        printf("2. Inserir Nova Antena\n");
+        printf("3. Remover Antena\n");
+        printf("4. Listar Antenas\n");
+        printf("5. Deduzir Efeito Nefasto\n");
+        printf("6. Mostrar Mapa\n");
+        printf("7. Sair\n");
+        
+        // Lógica de seleção
+        switch (opcao) {
+            case 1: {
+                // Carregar antenas a partir de um arquivo.
+                printf("Digite o nome do arquivo: ");
+                scanf("%s", nomeArquivo);
+                carregarAntenasDoArquivo(&lista, nomeArquivo);
+                break;
+            }
+            case 2: {
+                // Inserir uma nova antena.
+                char freq; ///< Frequência da antena.
+                int x, y; ///< Posições da antena (X, Y).
+                printf("Frequência da antena (letra): ");
+                scanf(" %c", &freq); ///< Lê a frequência da antena.
+                printf("Posição X: ");
+                scanf("%d", &x); ///< Lê a posição X.
+                printf("Posição Y: ");
+                scanf("%d", &y); ///< Lê a posição Y.
+
+                // Verifica se as posições estão dentro dos limites do mapa.
+                if (x >= 0 && x < TAM_MAPA && y >= 0 && y < TAM_MAPA) {
+                    inserirAntena(&lista, freq, x, y);
+                    printf("Antena inserida!\n");
+                } else {
+                    printf("Posição inválida!\n");
+                }
+                break;
+            }
+            case 3: {
+                // Remover uma antena da lista.
+                int x, y; ///< Posições da antena a ser removida.
+                printf("Posição X da antena a remover: ");
+                scanf("%d", &x); ///< Lê a posição X da antena.
+                printf("Posição Y da antena a remover: ");
+                scanf("%d", &y); ///< Lê a posição Y da antena.
+                removerAntena(&lista, x, y);
+                break;
+            }
+            case 4:
+                // Listar todas as antenas.
+                listarAntenas(lista);
+                break;
+            case 5:
+                // Deduzir as localizações com efeito nefasto.
+                deduzirEfeitoNefasto(lista);
+                break;
+            case 6:
+                // Mostrar o mapa com as antenas.
+                mostrarMapa(lista);
+                break;
+            case 7:
+                // Sair do programa.
+                printf("Saindo...\n");
+                break;
+            default:
+                // Caso o usuário insira uma opção inválida.
+                printf("Opção inválida! Tente novamente.\n");
+        }
+    } while (opcao != 7);
+    
+    liberarLista(lista);
+    return 0;
 }
 \end{lstlisting}
 
-A inserção ocorre no início da lista:
+\subsection{Gerenciamento de Antenas}
+ Inserção e Remoção de Antenas:
 
-\begin{lstlisting}[caption=Função para inserir antenas]
+\begin{lstlisting}[language=C]
 void inserirAntena(Antena** head, char freq, int x, int y) {
+    if (x < 0 || x >= TAM_MAPA || y < 0 || y >= TAM_MAPA) {
+        printf("Posicao invalida!\n");
+        return;
+    }
     Antena* nova = criarAntena(freq, x, y);
     nova->next = *head;
     *head = nova;
 }
-\end{lstlisting}
 
-\subsection{Remoção de Antenas}
-
-A remoção de antenas é realizada buscando pelo par de coordenadas:
-
-\begin{lstlisting}[caption=Função para remover uma antena]
 void removerAntena(Antena** head, int x, int y) {
-    Antena* temp = *head, *prev = NULL;
+    Antena* temp = *head;
+    Antena* prev = NULL;
+
     while (temp != NULL && (temp->x != x || temp->y != y)) {
         prev = temp;
         temp = temp->next;
     }
-    if (temp == NULL) return;
-    if (prev == NULL) *head = temp->next;
-    else prev->next = temp->next;
-    free(temp);
-}
-\end{lstlisting}
 
-\subsection{Listagem de Antenas}
-A listagem das antenas percorre a estrutura e exibe as informações:
-
-\begin{lstlisting}[caption=Função para listar antenas]
-void listarAntenas(Antena* head) {
-    while (head != NULL) {
-        printf("Frequência: %c | Posição: (%d, %d)\n", head->freq, head->x, head->y);
-        head = head->next;
+    if (temp == NULL) {
+        printf("Antena não encontrada na posição (%d, %d)!\n", x, y);
+        return;
     }
+
+    if (prev == NULL) { // Primeira da lista
+        *head = temp->next;
+    } else {
+        prev->next = temp->next;
+    }
+
+    free(temp);
+    printf("Antena removida com sucesso!\n");
 }
 \end{lstlisting}
 
-\subsection{Detecção de Interferências}
+\section{Detecção de Interferência}
+Algoritmo para identificar pontos de efeito nefasto:
 
-A detecção ocorre comparando pares de antenas de mesma frequência:
+\begin{lstlisting}[language=C]
+  void deduzirEfeitoNefasto(Antena* head) {
+    char mapa[TAM_MAPA][TAM_MAPA];
 
-\begin{lstlisting}[caption=Função para detectar interferências]
-void deduzirEfeitoNefasto(Antena* head) {
-    for (Antena* a1 = head; a1 != NULL; a1 = a1->next) {
-        for (Antena* a2 = a1->next; a2 != NULL; a2 = a2->next) {
-            if (a1->freq == a2->freq) {
-                int mx = (a1->x + a2->x) / 2;
-                int my = (a1->y + a2->y) / 2;
-                printf("Efeito nefasto em (%d, %d)\n", mx, my);
+    // Inicializa o mapa com '.'
+    for (int i = 0; i < TAM_MAPA; i++) {
+        for (int j = 0; j < TAM_MAPA; j++) {
+            mapa[i][j] = '.';
+        }
+    }
+
+    // Coloca as antenas no mapa
+    Antena* temp = head;
+    while (temp != NULL) {
+        mapa[temp->x][temp->y] = temp->freq;
+        temp = temp->next;
+    }
+
+    // Verifica pares de antenas para interferência
+    for (Antena* ant1 = head; ant1 != NULL; ant1 = ant1->next) {
+        for (Antena* ant2 = ant1->next; ant2 != NULL; ant2 = ant2->next) {
+            if (ant1->freq == ant2->freq) { // Mesma frequência
+                int dx = ant2->x - ant1->x;
+                int dy = ant2->y - ant1->y;
+
+                // Confere alinhamento (horizontal, vertical, diagonal)
+                if ((dx == 0 || dy == 0 || abs(dx) == abs(dy))) {
+                    int mx = (ant1->x + ant2->x) / 2;
+                    int my = (ant1->y + ant2->y) / 2;
+
+                    // Verifica se o ponto médio está dentro dos limites do mapa e não é uma antena
+                    if (mx >= 0 && mx < TAM_MAPA && my >= 0 && my < TAM_MAPA && mapa[mx][my] == '.') {
+                        mapa[mx][my] = '#'; // Marca o efeito nefasto
+                    }
+                }
             }
         }
     }
+
+    // Mostra o mapa com efeito nefasto
+    printf("\nMapa com Localizações com Efeito Nefasto:\n");
+    for (int i = 0; i < TAM_MAPA; i++) {
+        for (int j = 0; j < TAM_MAPA; j++) {
+            printf("%c", mapa[i][j]);
+        }
+        printf("\n");
+    }
+
 }
 \end{lstlisting}
 
-\section{Resultados e Discussão}
-Os testes realizados mostraram que a lista ligada proporciona uma manipulação eficiente das antenas. A complexidade das operações principais é:
+\section{Conclusão}
+O sistema desenvolvido apresenta:
+
 \begin{itemize}
-    \item Inserção: $O(1)$
-    \item Remoção: $O(n)$
-    \item Listagem: $O(n)$
-    \item Detecção de interferências: $O(n^2)$
+\item Arquitetura modular e bem estruturada
+\item Algoritmos eficientes para detecção de interferências
+\item Interface intuitiva e fácil de usar
+\item Código otimizado e com boa documentação
 \end{itemize}
 
-Os resultados indicam que, para grandes volumes de dados, a detecção de interferências pode ser otimizada com estruturas adicionais, como árvores ou tabelas hash.
+Como trabalhos futuros, recomenda-se:
 
-\section{Conclusão}
-O sistema desenvolvido demonstrou eficiência na manipulação e análise de antenas. A estrutura de lista ligada possibilitou um controle dinâmico das antenas, mas melhorias podem ser implementadas para otimizar a detecção de interferências.
-
-\section{Referências}
-[1] Cormen, T. H., Leiserson, C. E., Rivest, R. L., Stein, C. \textit{Introduction to Algorithms}, MIT Press, 2009.
+\begin{itemize}
+\item Implementação de persistência em banco de dados
+\item Adição de interface gráfica
+\item Estudos de performance para grandes volumes de dados
+\item Repositório GitHub: \href{https://github.com/JoaoLoureiro06/EDA-Project.git}{Clique aqui para acessar o repositório}
+\end{itemize}
 
 \end{document}
