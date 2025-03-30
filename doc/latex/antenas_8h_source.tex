@@ -1,0 +1,41 @@
+\doxysection{antenas.\+h}
+\hypertarget{antenas_8h_source}{}\label{antenas_8h_source}\mbox{\hyperlink{antenas_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\ \#ifndef\ ANTENAS\_H}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\ \#define\ ANTENAS\_H}}
+\DoxyCodeLine{00011\ \ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\ \#include\ <stdio.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\ \#include\ <stdlib.h>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\ \#include\ <string.h>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \#include\ <math.h>}}
+\DoxyCodeLine{00016\ \ }
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\ \#define\ TAM\_MAPA\ 12\ }}
+\DoxyCodeLine{00018\ \ }
+\DoxyCodeLine{00023\ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_antena}{Antena}}\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \textcolor{keywordtype}{char}\ \mbox{\hyperlink{struct_antena_acbb0ceb3114405ec0fd07f67b79bd3e5}{freq}};\ \ }
+\DoxyCodeLine{00025\ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{struct_antena_a3b196deb45a500d432ef7f7a653adbaf}{x}},\ \mbox{\hyperlink{struct_antena_a7166c31d6fd9c3607b300ee0dc6371ba}{y}};\ \ \ }
+\DoxyCodeLine{00026\ \ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_antena}{Antena}}*\ \mbox{\hyperlink{struct_antena_ae518c9afee14b875ac030364762e23ba}{next}};\ }
+\DoxyCodeLine{00027\ \ \}\ \mbox{\hyperlink{struct_antena}{Antena}};}
+\DoxyCodeLine{00028\ \ }
+\DoxyCodeLine{00036\ \ \mbox{\hyperlink{struct_antena}{Antena}}*\ \mbox{\hyperlink{antenas_8h_a45d602813bfa39b2875ba12549e962c5}{criarAntena}}(\textcolor{keywordtype}{char}\ \mbox{\hyperlink{struct_antena_acbb0ceb3114405ec0fd07f67b79bd3e5}{freq}},\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{struct_antena_a3b196deb45a500d432ef7f7a653adbaf}{x}},\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{struct_antena_a7166c31d6fd9c3607b300ee0dc6371ba}{y}});}
+\DoxyCodeLine{00037\ \ }
+\DoxyCodeLine{00045\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{antenas_8h_abe17b43d7b6526502c518455f77477f2}{inserirAntena}}(\mbox{\hyperlink{struct_antena}{Antena}}**\ head,\ \textcolor{keywordtype}{char}\ \mbox{\hyperlink{struct_antena_acbb0ceb3114405ec0fd07f67b79bd3e5}{freq}},\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{struct_antena_a3b196deb45a500d432ef7f7a653adbaf}{x}},\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{struct_antena_a7166c31d6fd9c3607b300ee0dc6371ba}{y}});}
+\DoxyCodeLine{00046\ \ }
+\DoxyCodeLine{00053\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{antenas_8h_aff5ebda3f4cb844d1a6f215f7cb5af69}{removerAntena}}(\mbox{\hyperlink{struct_antena}{Antena}}**\ head,\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{struct_antena_a3b196deb45a500d432ef7f7a653adbaf}{x}},\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{struct_antena_a7166c31d6fd9c3607b300ee0dc6371ba}{y}});}
+\DoxyCodeLine{00054\ \ }
+\DoxyCodeLine{00060\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{antenas_8h_aead8575b3d22094a340724ffe1c84645}{carregarAntenasDoArquivo}}(\mbox{\hyperlink{struct_antena}{Antena}}**\ head,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ nomeArquivo);}
+\DoxyCodeLine{00061\ \ }
+\DoxyCodeLine{00066\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{antenas_8h_ab72ad557ed17e436b81613ddbc9b94d2}{deduzirEfeitoNefasto}}(\mbox{\hyperlink{struct_antena}{Antena}}*\ head);}
+\DoxyCodeLine{00067\ \ }
+\DoxyCodeLine{00072\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{antenas_8h_a0cf296275af27ee1de8522e6cbcf1904}{listarAntenas}}(\mbox{\hyperlink{struct_antena}{Antena}}*\ head);}
+\DoxyCodeLine{00073\ \ }
+\DoxyCodeLine{00078\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{antenas_8h_adbdbe589aeb745e007385d196bfa9e7b}{mostrarMapa}}(\mbox{\hyperlink{struct_antena}{Antena}}*\ head);}
+\DoxyCodeLine{00079\ \ }
+\DoxyCodeLine{00084\ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{antenas_8h_aa63e87a1cb5e62ec898366d5b8095262}{liberarLista}}(\mbox{\hyperlink{struct_antena}{Antena}}*\ head);}
+\DoxyCodeLine{00085\ \ }
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\ \#endif\ }\textcolor{comment}{//\ ANTENAS\_H}}
+\DoxyCodeLine{00087\ \ }
+
+\end{DoxyCode}

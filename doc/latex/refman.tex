@@ -1,0 +1,172 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{titlesec}
+
+% Configuração da página
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+
+% Configuração do código fonte
+\lstset{
+    language=C,
+    basicstyle=\ttfamily\footnotesize,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=5pt,
+    showstringspaces=false,
+    captionpos=b,
+    breaklines=true,
+    frame=single,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green}\itshape,
+}
+
+% Configuração do cabeçalho e rodapé
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Gerenciamento de Antenas}
+\fancyhead[C]{Trabalho de Estruturas de Dados}
+\fancyhead[R]{2025}
+\fancyfoot[C]{\thepage}
+
+\title{\textbf{Gerenciamento de Antenas: Estruturas de Dados e Algoritmos}}
+\author{Jo\~ao Loureiro}
+\date{Mar\c{c}o de 2025}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Este trabalho apresenta um sistema para gerenciamento de antenas em uma cidade, utilizando listas ligadas simples. O sistema permite carregar, inserir, remover e listar antenas, além de detectar interferências e exibir um mapa representativo. Foram aplicadas técnicas de manipulação de listas dinâmicas para otimizar a eficiência das operações.
+Link do repositorio Git: \href{https://github.com/JoaoLoureiro06/EDA-Project.git}{https://github.com/JoaoLoureiro06/EDA-Project.git}
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{Introdução}
+O gerenciamento de antenas é um desafio na organização de redes de comunicação. Este projeto propõe um sistema baseado em estruturas de dados dinâmicas para armazenar e manipular informações sobre antenas, otimizando a detecção de interferências e o controle de posicionamento.
+
+\section{Metodologia}
+Utilizamos uma lista ligada simples para armazenar os dados das antenas. As operações implementadas incluem:
+\begin{itemize}
+    \item Inserção de novas antenas.
+    \item Remoção de antenas existentes.
+    \item Listagem de todas as antenas.
+    \item Detecção de interferências com base na proximidade.
+    \item Exibição de um mapa representando as antenas e áreas problemáticas.
+\end{itemize}
+
+\section{Estrutura de Dados Utilizada}
+A estrutura básica da antena foi definida conforme abaixo:
+
+\begin{lstlisting}[caption=Estrutura da Antena]
+typedef struct Antena {
+    char freq;
+    int x, y;
+    struct Antena* next;
+} Antena;
+\end{lstlisting}
+
+Cada antena possui uma frequência representada por um caractere, além das coordenadas (x, y). A lista ligada armazena os elementos de maneira dinâmica.
+
+\section{Implementação do Sistema}
+
+\subsection{Criação e Inserção de Antenas}
+
+\begin{lstlisting}[caption=Função para criar uma antena]
+Antena* criarAntena(char freq, int x, int y) {
+    Antena* nova = (Antena*)malloc(sizeof(Antena));
+    nova->freq = freq;
+    nova->x = x;
+    nova->y = y;
+    nova->next = NULL;
+    return nova;
+}
+\end{lstlisting}
+
+A inserção ocorre no início da lista:
+
+\begin{lstlisting}[caption=Função para inserir antenas]
+void inserirAntena(Antena** head, char freq, int x, int y) {
+    Antena* nova = criarAntena(freq, x, y);
+    nova->next = *head;
+    *head = nova;
+}
+\end{lstlisting}
+
+\subsection{Remoção de Antenas}
+
+A remoção de antenas é realizada buscando pelo par de coordenadas:
+
+\begin{lstlisting}[caption=Função para remover uma antena]
+void removerAntena(Antena** head, int x, int y) {
+    Antena* temp = *head, *prev = NULL;
+    while (temp != NULL && (temp->x != x || temp->y != y)) {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL) return;
+    if (prev == NULL) *head = temp->next;
+    else prev->next = temp->next;
+    free(temp);
+}
+\end{lstlisting}
+
+\subsection{Listagem de Antenas}
+A listagem das antenas percorre a estrutura e exibe as informações:
+
+\begin{lstlisting}[caption=Função para listar antenas]
+void listarAntenas(Antena* head) {
+    while (head != NULL) {
+        printf("Frequência: %c | Posição: (%d, %d)\n", head->freq, head->x, head->y);
+        head = head->next;
+    }
+}
+\end{lstlisting}
+
+\subsection{Detecção de Interferências}
+
+A detecção ocorre comparando pares de antenas de mesma frequência:
+
+\begin{lstlisting}[caption=Função para detectar interferências]
+void deduzirEfeitoNefasto(Antena* head) {
+    for (Antena* a1 = head; a1 != NULL; a1 = a1->next) {
+        for (Antena* a2 = a1->next; a2 != NULL; a2 = a2->next) {
+            if (a1->freq == a2->freq) {
+                int mx = (a1->x + a2->x) / 2;
+                int my = (a1->y + a2->y) / 2;
+                printf("Efeito nefasto em (%d, %d)\n", mx, my);
+            }
+        }
+    }
+}
+\end{lstlisting}
+
+\section{Resultados e Discussão}
+Os testes realizados mostraram que a lista ligada proporciona uma manipulação eficiente das antenas. A complexidade das operações principais é:
+\begin{itemize}
+    \item Inserção: $O(1)$
+    \item Remoção: $O(n)$
+    \item Listagem: $O(n)$
+    \item Detecção de interferências: $O(n^2)$
+\end{itemize}
+
+Os resultados indicam que, para grandes volumes de dados, a detecção de interferências pode ser otimizada com estruturas adicionais, como árvores ou tabelas hash.
+
+\section{Conclusão}
+O sistema desenvolvido demonstrou eficiência na manipulação e análise de antenas. A estrutura de lista ligada possibilitou um controle dinâmico das antenas, mas melhorias podem ser implementadas para otimizar a detecção de interferências.
+
+\section{Referências}
+[1] Cormen, T. H., Leiserson, C. E., Rivest, R. L., Stein, C. \textit{Introduction to Algorithms}, MIT Press, 2009.
+
+\end{document}
