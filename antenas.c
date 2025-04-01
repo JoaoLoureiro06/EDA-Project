@@ -89,7 +89,7 @@ void carregarAntenasDoArquivo(Antena** head, const char* nomeArquivo) {
     while (fgets(linha, sizeof(linha), file) && x < TAM_MAPA) {
         for (int y = 0; y < strlen(linha); y++) {
             char freq = linha[y];
-            if (freq != '\n' && freq != '.') { // Ignora pontos e novas linhas
+            if (freq != '\n' && freq != '.') { 
                 inserirAntena(head, freq, x, y);
             }
         }
@@ -111,38 +111,36 @@ void carregarAntenasDoArquivo(Antena** head, const char* nomeArquivo) {
 void deduzirEfeitoNefasto(Antena* head) {
     char mapa[TAM_MAPA][TAM_MAPA];
 
-    // Inicializa o mapa com pontos
+ 
     for (int i = 0; i < TAM_MAPA; i++) {
         for (int j = 0; j < TAM_MAPA; j++) {
             mapa[i][j] = '.';
         }
     }
 
-    // Coloca as antenas no mapa
+    
     Antena* temp = head;
     while (temp != NULL) {
         mapa[temp->x][temp->y] = temp->freq;
         temp = temp->next;
     }
 
-    // Verifica pares de antenas para interferência
+  
     for (Antena* ant1 = head; ant1 != NULL; ant1 = ant1->next) {
         for (Antena* ant2 = ant1->next; ant2 != NULL; ant2 = ant2->next) {
             if (ant1->freq == ant2->freq) { 
                 int dx = ant2->x - ant1->x;
                 int dy = ant2->y - ant1->y;
 
-                //  alinhamento (horizontal, vertical, diagonal)
                 if (dx == 0 || dy == 0 || abs(dx) == abs(dy)) {
              
                     int dist1 = sqrt(dx * dx + dy * dy);
-                    int dist2 = dist1 / 2; // A distância entre uma antena e o ponto médio
+                    int dist2 = dist1 / 2;
 
-                    // Condição: uma antena está a duas vezes a distância da outra
                     int mx = (ant1->x + ant2->x) / 2;
                     int my = (ant1->y + ant2->y) / 2;
 
-                    // Verifica se a localização do efeito nefasto é válida
+                 
                     if (dist1 == 2 * dist2 && mx >= 0 && mx < TAM_MAPA && my >= 0 && my < TAM_MAPA && mapa[mx][my] == '.') {
                         mapa[mx][my] = '#'; 
                     }
@@ -192,14 +190,13 @@ void listarAntenas(Antena* head) {
 void mostrarMapa(Antena* head) {
     char mapa[TAM_MAPA][TAM_MAPA];
 
-    // Inicializa o mapa com pontos
+
     for (int i = 0; i < TAM_MAPA; i++) {
         for (int j = 0; j < TAM_MAPA; j++) {
             mapa[i][j] = '.';
         }
     }
 
-    // Coloca as antenas no mapa
     Antena* temp = head;
     while (temp != NULL) {
         if (temp->x >= 0 && temp->x < TAM_MAPA && temp->y >= 0 && temp->y < TAM_MAPA) {

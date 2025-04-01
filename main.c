@@ -16,7 +16,7 @@ int main() {
     char nomeArquivo[50]; ///< Nome do arquivo que será utilizado para carregar antenas.
 
     do {
-        // Exibe o menu de opções.
+        
         printf("\n===== Menu =====\n");
         printf("1. Carregar Antenas de Arquivo\n");
         printf("2. Inserir Nova Antena\n");
@@ -25,7 +25,7 @@ int main() {
         printf("5. Deduzir Localizações com Efeito Nefasto\n");
         printf("6. Mostrar Mapa\n");
         printf("7. Sair\n");
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
         switch (opcao) {
@@ -37,17 +37,17 @@ int main() {
                 break;
             }
             case 2: {
-                // Inserir uma nova antena.
-                char freq; ///< Frequência da antena.
-                int x, y; ///< Posições da antena (X, Y).
+               
+                char freq; 
+                int x, y; 
                 printf("Frequência da antena (letra): ");
-                scanf(" %c", &freq); ///< Lê a frequência da antena.
+                scanf(" %c", &freq); 
                 printf("Posição X: ");
-                scanf("%d", &x); ///< Lê a posição X.
+                scanf("%d", &x);
                 printf("Posição Y: ");
-                scanf("%d", &y); ///< Lê a posição Y.
+                scanf("%d", &y); 
 
-                // Verifica se as posições estão dentro dos limites do mapa.
+               
                 if (x >= 0 && x < TAM_MAPA && y >= 0 && y < TAM_MAPA) {
                     inserirAntena(&lista, freq, x, y);
                     printf("Antena inserida!\n");
@@ -57,38 +57,38 @@ int main() {
                 break;
             }
             case 3: {
-                // Remover uma antena da lista.
-                int x, y; ///< Posições da antena a ser removida.
+               
+                int x, y; 
                 printf("Posição X da antena a remover: ");
-                scanf("%d", &x); ///< Lê a posição X da antena.
+                scanf("%d", &x);
                 printf("Posição Y da antena a remover: ");
-                scanf("%d", &y); ///< Lê a posição Y da antena.
+                scanf("%d", &y); 
                 removerAntena(&lista, x, y);
                 break;
             }
             case 4:
-                // Listar todas as antenas.
+               
                 listarAntenas(lista);
                 break;
             case 5:
-                // Deduzir as localizações com efeito nefasto.
+              
                 deduzirEfeitoNefasto(lista);
                 break;
             case 6:
-                // Mostrar o mapa com as antenas.
+                
                 mostrarMapa(lista);
                 break;
             case 7:
-                // Sair do programa.
+             
                 printf("Saindo...\n");
                 break;
             default:
-                // Caso o usuário insira uma opção inválida.
+                
                 printf("Opção inválida! Tente novamente.\n");
         }
 
-    } while (opcao != 7); ///< O loop continua até o usuário escolher a opção de sair.
+    } while (opcao != 7); 
 
-    liberarLista(lista); ///< Libera a memória alocada para as antenas.
-    return 0; ///< Retorna 0 indicando que o programa foi executado com sucesso.
+    liberarLista(lista); 
+    return 0;
 }
