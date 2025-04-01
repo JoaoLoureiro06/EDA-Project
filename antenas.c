@@ -58,7 +58,7 @@ void removerAntena(Antena** head, int x, int y) {
         return;
     }
 
-    if (prev == NULL) { // Primeira da lista
+    if (prev == NULL) { 
         *head = temp->next;
     } else {
         prev->next = temp->next;
@@ -111,7 +111,7 @@ void carregarAntenasDoArquivo(Antena** head, const char* nomeArquivo) {
 void deduzirEfeitoNefasto(Antena* head) {
     char mapa[TAM_MAPA][TAM_MAPA];
 
-    // Inicializa o mapa com '.'
+    // Inicializa o mapa com pontos
     for (int i = 0; i < TAM_MAPA; i++) {
         for (int j = 0; j < TAM_MAPA; j++) {
             mapa[i][j] = '.';
@@ -128,25 +128,29 @@ void deduzirEfeitoNefasto(Antena* head) {
     // Verifica pares de antenas para interferência
     for (Antena* ant1 = head; ant1 != NULL; ant1 = ant1->next) {
         for (Antena* ant2 = ant1->next; ant2 != NULL; ant2 = ant2->next) {
-            if (ant1->freq == ant2->freq) { // Mesma frequência
+            if (ant1->freq == ant2->freq) { 
                 int dx = ant2->x - ant1->x;
                 int dy = ant2->y - ant1->y;
 
-                // Confere alinhamento (horizontal, vertical, diagonal)
-                if ((dx == 0 || dy == 0 || abs(dx) == abs(dy))) {
+                //  alinhamento (horizontal, vertical, diagonal)
+                if (dx == 0 || dy == 0 || abs(dx) == abs(dy)) {
+             
+                    int dist1 = sqrt(dx * dx + dy * dy);
+                    int dist2 = dist1 / 2; // A distância entre uma antena e o ponto médio
+
+                    // Condição: uma antena está a duas vezes a distância da outra
                     int mx = (ant1->x + ant2->x) / 2;
                     int my = (ant1->y + ant2->y) / 2;
 
-                    // Verifica se o ponto médio está dentro dos limites do mapa e não é uma antena
-                    if (mx >= 0 && mx < TAM_MAPA && my >= 0 && my < TAM_MAPA && mapa[mx][my] == '.') {
-                        mapa[mx][my] = '#'; // Marca o efeito nefasto
+                    // Verifica se a localização do efeito nefasto é válida
+                    if (dist1 == 2 * dist2 && mx >= 0 && mx < TAM_MAPA && my >= 0 && my < TAM_MAPA && mapa[mx][my] == '.') {
+                        mapa[mx][my] = '#'; 
                     }
                 }
             }
         }
     }
 
-    // Mostra o mapa com efeito nefasto
     printf("\nMapa com Localizações com Efeito Nefasto:\n");
     for (int i = 0; i < TAM_MAPA; i++) {
         for (int j = 0; j < TAM_MAPA; j++) {
@@ -155,6 +159,8 @@ void deduzirEfeitoNefasto(Antena* head) {
         printf("\n");
     }
 }
+
+
 
 /**
  * @brief Lista todas as antenas registradas.
@@ -202,7 +208,6 @@ void mostrarMapa(Antena* head) {
         temp = temp->next;
     }
 
-    // Mostrar mapa
     printf("\nMapa das antenas:\n");
     for (int i = 0; i < TAM_MAPA; i++) {
         for (int j = 0; j < TAM_MAPA; j++) {
